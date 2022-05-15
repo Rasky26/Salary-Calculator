@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Import the jQuery script -->
+    <script src="scripts/jQuery.js" charset="utf-8"></script>
+    <!-- Import the JS script -->
+    <script src="scripts/scripts.js" charset="utf-8"></script>
+    <!-- Import the stylesheet -->
+    <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+        <h1>Salary Calculator</h1>
+    </header>
+
+    <!-- Holds the form entry -->
+    <section class="container input-container">
+        <!-- _employee first name, last name, ID number, job title, annual salary_. -->
+        <div class="card input-card">
+            <h2>Enter Employee Information:</h2>
+            <div class="input-field">
+                <label for="name-first">First Name</label>
+                <input id="name-first" class="text-input" type="text" required/>
+            </div>
+            <div class="input-field">
+                <label for="name-last">Last Name</label>
+                <input id="name-last" class="text-input" type="text"  required/>
+            </div>
+            <div class="input-field">
+                <label for="id-number">ID Number</label>
+                <input id="id-number" class="text-input" required/>
+            </div>
+            <div class="input-field">
+                <label for="job-title">Job Title</label>
+                <input id="job-title" class="text-input" required/>
+            </div>
+            <div class="input-field">
+                <label for="annual-salary">Annual Salary</label>
+                <input id="annual-salary" class="text-input" required/>
+            </div>
+            <div class="button-container">
+                <button type="button">Add Employee</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
