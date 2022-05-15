@@ -35,15 +35,17 @@ function submitHandler() {
         jobTitle: validateInput('#job-title', 'string'),
         annualSalary: validateInput('#annual-salary', 'float'),
     }
-    console.log(employee, 'employee')
 
-    // Add to the global `employees` array
-    employees.push(employee)
-
-    console.log(employees, '????/')
+    // Check if all the employee values exist
+    if (checkAllEmployeeInformationExists(employee)) {
+     
+        // If all values exist, add the `employee` to the global `employees` array
+        employees.push(employee)
+    }
 }
 
 
+// --------------------------------
 // Function that pulls in the specific element and
 // validates it based on its expected type of data.
 function validateInput(field, fieldType) {
@@ -64,6 +66,7 @@ function validateInput(field, fieldType) {
             break
         // String values can be skipped
         default:
+            inputItem = validateExistance(field, inputItem)
             break
     }
 
@@ -71,6 +74,7 @@ function validateInput(field, fieldType) {
 }
 
 
+// --------------------------------
 // Function that checks if the inputItem is an integer
 function validateInteger(field, inputItem) {
 
@@ -106,6 +110,7 @@ function validateInteger(field, inputItem) {
 }
 
 
+// --------------------------------
 // Function that checks if the inputItem is an integer
 function validateFloat(field, inputItem) {
 
@@ -135,4 +140,54 @@ function validateFloat(field, inputItem) {
 
     // Return a blank value
     return ''
+}
+
+
+// --------------------------------
+// Function that checks for a blank field
+function validateExistance(field, inputItem) {
+
+    // Check that the field does not exist or is blank
+    if (
+        (inputItem === undefined) || // Was not defined
+        (!inputItem)                 // Is a blank field
+    ) {
+        // Flag the input as invalid
+        $(field)
+            .addClass('input-error')
+            .val('')
+
+        // Return a blank value
+        return ''
+    }
+
+    // A valid entry has been found.
+    // Remove any error classes if they exist
+    $(field)
+        .removeClass('input-error')
+
+    // Return the value
+    return inputItem
+}
+
+
+// --------------------------------
+// Function that ensures all information in the `employee` object
+// contains existing information
+function checkAllEmployeeInformationExists(employee) {
+    
+    // Loop through the `employee` object to check for blank fields
+    // REF: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in
+    for (const key in employee) {
+
+        // Loop through each value of the employee object values.
+        // Use the `key` value to get the associated `value` from the `employee` object.
+        if (!employee[key]) {
+            
+            // If a blank field was found, stop the loop by returning `false`
+            return false
+        }
+    }
+    // If all fields had existing information, return `true`
+    return true
 }
