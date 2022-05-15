@@ -1,13 +1,130 @@
 @import '_reset.css';
 
 :root {
+    /* Color pallete */
+    --clr-blue: hsl(193, 99%, 55%);
+    --clr-dark-blue: hsl(211, 32%, 27%);
+    --clr-green: hsl(165, 91%, 58%);
+    --clr-dark-green: hsl(170, 73%, 47%);
     --clr-flagged: hsl(0, 100%, 86%);
+    --clr-flagged-bright: hsl(0, 100%, 26%);
+    --clr-font-light: hsl(0, 0%, 86%);
+    --clr-font-dark: hsl(0, 0%, 26%);
+    --clr-shadow: hsl(0, 0%, 65%);
+
+    /* Font weights */
+    --fw-light: 200;
+    --fw-normal: 400;
+    --fw-bold: 700;
+}
+
+html,
+body {
+    font-family: 'Barlow', Arial, Helvetica, sans-serif;
+}
+
+header {
+    background-color: var(--clr-dark-blue);
+    color: var(--clr-font-light);
+    padding-top: 2em;
+    padding-bottom: 1.26rem;
+    text-align: center;
+    font-size: 1.26rem;
+    font-weight: var(--fw-bold);
+}
+
+.container {
+    margin: 10px 10% 0px;
+    padding: 1em;
+    border: 1px solid var(--clr-dark-blue);
+    border-radius: 12px;
+    box-shadow: 4px 6px 10px var(--clr-shadow);
+}
+
+.container > h2 {
+    padding-bottom: 24px;
+}
+
+.card {
+    display: inline-block;
+    width: 80%;
+    padding-left: 48px;
+    margin: 0 auto;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+}
+
+label {
+    order: -1;
+    padding-left: 24px;
+    transform: translateY(-0px);
+    color: var(--clr-font-dark);
+    font-weight: var(--fw-light);
+    transition: 0.26s linear;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid var(--clr-dark-blue);
+    outline: none;
+    width: 100%;
+    padding-left: 12px;
+    font-weight: var(--fw-bold);
+    color: var(--clr-dark-blue);
+    transition: 0.26s linear;
+}
+
+input:hover,
+input:focus {
+    border-bottom: 2px solid var(--clr-dark-blue);
+}
+
+input:hover + label,
+input:focus + label {
+    transform: translateY(-4px);
+    color: var(--clr-dark-blue);
 }
 
 .input-error {
-    border: 1px solid red;
+    border-bottom: 3px solid var(--clr-flagged-bright);
+}
+
+#button-add-employee {
+    width: 100%;
+    background-color: var(--clr-dark-blue);
+    color: var(--clr-font-light);
+    font-size: 1.2rem;
+    font-weight: var(--fw-bold);
+}
+
+table {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+td {
+    text-align: center;
+}
+
+.button-delete {
+    background-color: var(--clr-flagged);
+    font-size: 1.2rem;
+    font-weight: var(--fw-bold);
+}
+
+.monthly-salaries {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.monthly-salaries > span {
+    font-weight: var(--fw-bold);
 }
 
 .flag-salaries {
-    background-color: red;
+    background-color: var(--clr-flagged);
 }

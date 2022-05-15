@@ -1,5 +1,3 @@
-console.log('Heyo')
-
 // --------------------------------
 // Global variables
 let employees = []
@@ -19,6 +17,11 @@ function readyNow() {
     // Button click handler - handles the input fields and
     // updates the DOM with new employees
     $(document).on('click', '#button-add-employee', submitHandler)
+
+    // Deletion click handler - when clicked, removed the selected
+    // `<tr>` element, update the total monthly amount, and
+    // the globally stored employees variable.
+    $(document).on('click', '.button-delete', deletionHandler)
 }
 
 
@@ -63,13 +66,16 @@ function validateInput(field, fieldType) {
     // Check the type of value the input should be converted
     // to and treated as.
     switch (fieldType) {
+
         case 'float':
             inputItem = validateFloat(field, inputItem)
             break
+
         case 'integer':
             inputItem = validateInteger(field, inputItem)
             break
-        // String values can be skipped
+
+        // String values can be checked for existance
         default:
             inputItem = validateExistance(field, inputItem)
             break
@@ -221,6 +227,10 @@ function addEmployeeToTable(employee) {
             </td>
         </tr>
     `)
+
+    // Add in a `data-*` field hidden on the `<tr>` element
+    // Target the last `<tr>`, since that was the last one added
+    $('tr').last().data('employee', employee)
 }
 
 
@@ -263,7 +273,7 @@ function formatNumber(number) {
 
     // Round annual salary to show exactly two decimal places with comma formatting
     // REF: https://stackoverflow.com/a/40138485
-    return number.toLocaleString(
+    return number.toLocaleString( 
         'en-US',
         {
             minimumFractionDigits: 2,
@@ -291,4 +301,42 @@ function checkMonthlySalaryTotals(monthlyAmount) {
     // If not over the amount, remove the class if it exists
     // Remove the CSS class from the parent object
     $('#monthly-salaries').parent().removeClass('flag-salaries')
+}
+
+
+// --------------------------------
+// Function that remvoes an employee's information from the page
+function deletionHandler() {
+
+    // Get the containing `<tr>` element, and get the data object stored within it
+    let employee = $(this).parents('tr').data('employee')
+
+    // Remove that object from the global `employees` array
+    removeEmployeeFromArray(employee)
+
+    $(this).parents('tr').remove()
+}
+
+
+// --------------------------------
+// Function that removes the selected employee from the global
+// 'employees' array.
+function removeEmployeeFromArray(employee) {
+
+    // Use the `employee` object to locate the index of the
+    // employee object in the global `employees`. Once the
+    // index is found, pop() and store that value in case I want
+    // to use it later. If exact duplicates of all fields exist in
+    // the global array, then it doesn't technically matter
+    // which item is removed.
+    let removedEmployeeIndex = employees.indexOf(employee)
+
+    // Pop out the identified element from the array
+    let removedEmployee = employees.pop(removedEmployeeIndex)
+
+    // Recalculate the total monthly salary total
+    calculateMonthlySalaryTotal()
+
+    // Return the removed employee just in case I want to use it later
+    return removedEmployee
 }
