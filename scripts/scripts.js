@@ -3,6 +3,7 @@ console.log('Heyo')
 // --------------------------------
 // Global variables
 let employees = []
+const monthlySalariesCap = 20000
 
 
 // --------------------------------
@@ -41,6 +42,12 @@ function submitHandler() {
      
         // If all values exist, add the `employee` to the global `employees` array
         employees.push(employee)
+
+        // Then add a new employee row to the table
+        addEmployeeToTable(employee)
+
+        // Update the total monthly salaries on the DOM
+        calculateMonthlySalaryTotal()
     }
 }
 
@@ -57,11 +64,9 @@ function validateInput(field, fieldType) {
     // to and treated as.
     switch (fieldType) {
         case 'float':
-            console.log('Check as a number')
             inputItem = validateFloat(field, inputItem)
             break
         case 'integer':
-            console.log('Check as a integer')
             inputItem = validateInteger(field, inputItem)
             break
         // String values can be skipped
@@ -106,7 +111,7 @@ function validateInteger(field, inputItem) {
         .removeClass('input-error')
     
     // Return the integer value
-    return inputItem
+    return parseInt(inputItem)
 }
 
 
@@ -129,7 +134,7 @@ function validateFloat(field, inputItem) {
             .removeClass('input-error')
 
         // Return the float value
-        return inputItem
+        return Number(inputItem)
     }
 
     // Otherwise, the input was not a float.
@@ -188,6 +193,102 @@ function checkAllEmployeeInformationExists(employee) {
             return false
         }
     }
+
     // If all fields had existing information, return `true`
     return true
+}
+
+
+// --------------------------------
+// Function that adds table rows to the DOM
+function addEmployeeToTable(employee) {
+
+    // Format the annual salary to 'en-US' styling
+    const formattedAnnualSalary = formatNumber(employee.annualSalary)
+
+    // Get the table body element by ID
+    $('#employee-table').append(`
+        <tr>
+            <td>${employee.id}</td>
+            <td>${employee.nameFirst}</td>
+            <td>${employee.nameLast}</td>
+            <td>${employee.jobTitle}</td>
+            <td>$${formattedAnnualSalary}</td>
+            <td>
+                <button type="button" class="button-delete">
+                    Remove
+                </button>
+            </td>
+        </tr>
+    `)
+}
+
+
+// --------------------------------
+// Function that calculates the monthly total salary for all employees
+// and updates the DOM with that value
+function calculateMonthlySalaryTotal() {
+
+    // Initialize the total salaries variable
+    let totalAnnualSalaries = 0
+
+    // Loop through all employees, add up their annual salaries,
+    // and then divide it by 12 (number of months in a year)
+    for (let employee of employees) {
+
+        // Sum in each employee's salary
+        totalAnnualSalaries += employee.annualSalary
+    }
+
+    // Calculate the monthly total salaries for all employees
+    let monthlyTotalSalaries = totalAnnualSalaries / 12
+    
+    // Remove the existing monthly salary total from the DOM
+    $('#monthly-salaries').empty()
+
+    // Add in the updated value to the DOM, formatted.
+    $('#monthly-salaries').text(
+        `$${formatNumber(monthlyTotalSalaries)}`
+    )
+
+    // Check if the monthly total salary is greater than $20,000.
+    // If the value exceeds that, set a CSS class
+    checkMonthlySalaryTotals(monthlyTotalSalaries)
+}
+
+
+// --------------------------------
+// Format number with commas and limit decimal places to two (2)
+function formatNumber(number) {
+
+    // Round annual salary to show exactly two decimal places with comma formatting
+    // REF: https://stackoverflow.com/a/40138485
+    return number.toLocaleString(
+        'en-US',
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }
+    )
+}
+
+
+// --------------------------------
+// Function that sets or removes the CSS class for excess monthly salaries
+function checkMonthlySalaryTotals(monthlyAmount) {
+
+    // HARD-CODED monthly salaries at $20,000 - per homework
+    // Check if the totaled `monthlyAmount` exceeds the global value
+    if (monthlyAmount > monthlySalariesCap) {
+
+        // Add a new CSS class to the parent `<div>`
+        $('#monthly-salaries').parent().addClass('flag-salaries')
+
+        // Use a return statement so I don't need to use an `else` statement
+        return
+    }
+
+    // If not over the amount, remove the class if it exists
+    // Remove the CSS class from the parent object
+    $('#monthly-salaries').parent().removeClass('flag-salaries')
 }

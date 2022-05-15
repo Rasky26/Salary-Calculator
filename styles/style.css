@@ -1,9 +1,13 @@
 @import '_reset.css';
 
 :root {
-
+    --clr-flagged: hsl(0, 100%, 86%);
 }
 
 .input-error {
     border: 1px solid red;
+}
+
+.flag-salaries {
+    background-color: red;
 }
